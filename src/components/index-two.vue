@@ -4,21 +4,23 @@
 			<!--other-view-->
 			indexHeader
 		</div>
-		<div class="indexAside" :style="{Width:widths,paddingTop:paddingTops}">
-			<div v-show="!show" class="el-aside-root">
-				<div>
-					<!--other-view-->
-					indexAside
+		<div class="indexAside" :style="{width:widths,paddingTop:paddingTops}">
+			<el-scrollbar :vertical="vertical">
+				<div v-show="!show" class="el-aside-root">
+					<div>
+						<!--other-view-->
+						<index-aside></index-aside>
+					</div>
+					<div class="elAsideBorder" id="elAsideBorder" v-move="{funcs:changeW,minWidth:minWidth,isChangeWH:true}" v-changeWH="changeWHCursor"></div>
 				</div>
-				<div class="elAsideBorder" id="elAsideBorder" v-move="{funcs:changeW,minWidth:minWidth,isChangeWH:true}" v-changeWH="changeWHCursor"></div>
-			</div>
+			</el-scrollbar>
 			<div :width="minWidth" v-show="show" @click="changeWidth" class="el-aside-show">
 				<i class="icons el-icon-caret-right"></i>
 			</div>
 		</div>
-		<div class="indexMain" :style="{paddingLeft:paddingLefts,paddingTop:paddingTops}">
+		<div class="indexMain" :style="{paddingLeft:paddingLefts,paddingTop:paddingTops,paddingBottom:paddingBottoms}">
 			<!--other-view-->
-			<table-panel></table-panel>
+			<router-view></router-view>
 		</div>
 		<div class="indexFooter" :style="{paddingLeft:paddingLefts}">
 			<!--other-view-->
@@ -29,30 +31,41 @@
 
 <script>
 	import TablePanel from './view/index_main';
+	import IndexAside from './view/index_aside';
 	export default {
 		name: 'index-two',
 		data() {
-			let widths = '200px'
+			let widths = '240px'
 			let tops = '55px'
 			return {
 				title: '首页',
 				show: false,
 				widths: widths,
 				defWidth: widths,
-				minWidth: '40px',
+				minWidth: widths,
 				paddingLefts: widths,
 				paddingTops: tops,
+				paddingBottoms: '40px',
 				changeWHCursor: {
 					cursor: 'e-resize',
 					default: 'default'
-				}
+				},
+				vertical:true,
 			}
 		},
 		components: {
 			'table-panel': TablePanel,
+			'index-aside': IndexAside,
 		},
-		created: function() {
-
+		created: function() {},
+		watch: {
+			$route: function(to, from) {
+				console.log(to.path, from.path)
+				this.$store.commit({
+					type: 'setUrl',
+					url: to.path
+				})
+			}
 		},
 		methods: {
 			changeWidth: function() {
@@ -64,7 +77,7 @@
 
 			},
 			changeW: function(dt) {
-				//console.log(this.widths,dt);
+				//console.log(this.widths, parseInt(dt.width));
 				this.widths = dt.width;
 				this.paddingLefts = this.widths;
 			}
@@ -98,7 +111,7 @@
 		z-index: 9;
 		top: 0px;
 		height: 55px;
-		background-color: gainsboro;
+		/*background-color: gainsboro;*/
 		text-align: center;
 		line-height: 55px;
 	}
@@ -108,21 +121,31 @@
 		top: 0px;
 		z-index: 8;
 		height: 100%;
-		background-color: gainsboro;
+		/*border-right: 1px solid darkgray;*/
+		/*background-color: gainsboro;*/
+		overflow: hidden;
 	}
 	
 	div.indexAside .elAsideBorder {
 		position: absolute;
-		width: 4px;
+		width: 16px;
 		height: 100%;
 		right: 0;
 		top: 0px;
 		/*background-color: gold;*/
 	}
 	
+	div.indexAside .el-scrollbar {
+		height: 100%;
+	}
+	
+	div.indexAside .el-scrollbar__wrap {
+		overflow-x: hidden;
+	}
+	
 	div.indexAside .el-aside-root {
 		height: 100%;
-		width: 200px;
+		width: 100%;
 		position: relative;
 	}
 	
@@ -159,6 +182,6 @@
 		/*padding-left: 200px;*/
 		text-align: center;
 		line-height: 40px;
-		background-color: gainsboro;
+		/*background-color: gainsboro;*/
 	}
 </style>

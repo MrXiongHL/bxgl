@@ -17,25 +17,34 @@ Vue.directive(titleName, {
 Vue.directive(moveName, {
 	inserted: function(el, binding) {
 		el.onmousedown = function(e) {
-			var disx = e.pageX - el.offsetLeft;
-			var disy = e.pageY - el.offsetTop;
-			var ePGX = e.pageX;
-			var oldPGX = e.pageX;
+			let disx = e.pageX - el.offsetLeft;
+			let disy = e.pageY - el.offsetTop;
+			let ePGX = e.pageX;
+			let oldPGX = e.pageX;
+			let selectStyle
+			let htmlCss
+			let bodyCss
+			if(binding.value.isChangeWH) {
+				selectStyle = '-moz-user-select: none; -khtml-user-select: none; user-select: none;'
+				htmlCss = document.querySelector('html').style.cssText
+				bodyCss = document.body.style.cssText
+				htmlCss = bodyCss = selectStyle
+			}
 			document.onmousemove = function(e) {
-				var direction = e.pageX - ePGX;
+				let direction = e.pageX - ePGX;
 				if(binding.name === moveName && !binding.value.isChangeWH) {
 					if(el.offsetLeft <= 0 && direction < 0) {
 						return;
 					}
 					el.parentNode.style.left = e.pageX - disx + 'px';
 				} else {
-					var widths = 0;
+					let widths = 0;
 					if(direction < 0) {
 						widths = (el.parentNode.clientWidth + (e.pageX - oldPGX))
 					} else {
 						widths = (el.parentNode.clientWidth - (oldPGX - e.pageX))
 					}
-					var minWidths = parseInt(binding.value.minWidth.split('px'));
+					let minWidths = parseInt(binding.value.minWidth.split('px'));
 					if(widths < minWidths) {
 						widths = minWidths;
 					}
@@ -56,8 +65,8 @@ Vue.directive(moveName, {
 						el.style.left = 500 - el.clientWidth + 'px';
 					}
 				} else {
-					var widths = el.parentNode.clientWidth;
-					var minWidths = parseInt(binding.value.minWidth.split('px'));
+					let widths = el.parentNode.clientWidth;
+					let minWidths = parseInt(binding.value.minWidth.split('px'));
 					if(widths < minWidths) {
 						widths = minWidths;
 					}
@@ -65,6 +74,9 @@ Vue.directive(moveName, {
 						width: widths + 'px'
 					})
 				}
+				htmlCss = htmlCss.replace(selectStyle, '')
+				bodyCss = bodyCss.replace(selectStyle, '')
+				
 				document.onmousemove = document.onmouseup = null;
 			}
 		}

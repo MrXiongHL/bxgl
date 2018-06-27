@@ -20,9 +20,9 @@ export default {
     }
   },
   computed: {
-    num: function() {
-      return this.$store.state.num;
-    },
+//  num: function() {
+//    return this.$store.state.num;
+//  },
     ...mapState({
       //sum:'sum',
       sum: state => state.sum,
