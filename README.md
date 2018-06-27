@@ -25,5 +25,6 @@ npm run e2e
 
 # run all tests
 npm test
-```
 
+```
+<font color="#dd0000">element-ui NavMeun 使用动态数据方式加载  [链接](https://github.com/MrXiongHL/bxgl/blob/master/src/components/view/index_aside.vue)</font> 
