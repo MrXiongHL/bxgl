@@ -7,6 +7,8 @@ import './assets/font/iconfont.css'
 import App from './App'
 import VuexStore from './util/vuex_store'
 import router from './router'
+import './util/config'
+
 
 Vue.use(ElementUI);
 //自定义指令

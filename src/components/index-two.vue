@@ -50,7 +50,7 @@
 					cursor: 'e-resize',
 					default: 'default'
 				},
-				vertical:true,
+				vertical: true,
 			}
 		},
 		components: {
@@ -60,11 +60,14 @@
 		created: function() {},
 		watch: {
 			$route: function(to, from) {
-				console.log(to.path, from.path)
+				let nameArr = to.path.split('/')
+				let name = nameArr[nameArr.length - 1]
 				this.$store.commit({
-					type: 'setUrl',
-					url: to.path
+					type: 'setRouterIndex',
+					url: name,
+					urlLocatoin: '#/index/'
 				})
+
 			}
 		},
 		methods: {

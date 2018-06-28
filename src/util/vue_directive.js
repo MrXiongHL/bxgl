@@ -76,7 +76,7 @@ Vue.directive(moveName, {
 				}
 				htmlCss = htmlCss.replace(selectStyle, '')
 				bodyCss = bodyCss.replace(selectStyle, '')
-				
+
 				document.onmousemove = document.onmouseup = null;
 			}
 		}

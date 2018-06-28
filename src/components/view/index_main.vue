@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<el-tabs v-model="editableTabsValue" type="border-card" editable @tab-remove="removeTab" @tab-add="addTab" @tab-click="selectTab">
-			<el-tab-pane :key="item.name" v-for="(item, index) in editableTabs" :label="item.title" :closable="item.closable" :name="item.name">
+		<el-tabs v-model="tables.selectTable" type="border-card" @tab-remove="removeTab" @tab-click="selectTab">
+			<el-tab-pane :key="item.name" v-for="(item, index) in tables.tables" :label="item.title" :closable="item.closable" :name="item.index">
 				<!--<component :is="item.content"></component>-->
 			</el-tab-pane>
 		</el-tabs>
@@ -14,92 +14,60 @@
 		name: 'index-main',
 		data() {
 			return {
-				editableTabsValue: '2',
-				editableTabs: [{
-					title: 'Tab 1',
-					name: '1',
-					content: 'User',
-					closable: false,
-				}, {
-					title: 'Tab 2',
-					name: '2',
-					content: 'User',
-					closable: true,
-				}],
-				tabIndex: 2
+
 			}
 		},
-		created: function() {
-			//			if(this.tables.tables.length > 0) {
-			//				console.log('tables1', this.tables.selectIndex)
-			//				this.editableTabs = this.tables.tables
-			//				this.editableTabsValue = this.tables.selectIndex + ''
-			//			} else {
-			//				this.$store.commit({
-			//					type: 'setTables',
-			//					tables: this.editableTabs,
-			//					selectIndex: this.editableTabsValue
-			//				})
-			//				console.log('tables2', this.tables.tables, this.tables.selectIndex)
-			//			}
-		},
+		created: function() {},
 		computed: {
-			//			...mapState({
-			//				tables: state => state.tables
-			//			}),
+			...mapState({
+				tables: state => state.tables,
+				routerArr: state => state.routerArr
+			}),
 		},
 		methods: {
 			selectTab: function(tab) {
 				let tbI = tab.index
 				let tbN = tab.name
 				let tabPN = tab.paneName
+				let tabTitle = tab.label
 				this.$store.commit({
-					type: 'setTablesIndex',
-					selectIndex: tbN
+					type: 'setRouterIndex',
+					url: tbN,
+					urlLocatoin: '#/index/'
 				})
-				console.log(tab, tab.index, tab.name, tab.paneName)
+				//console.log(this.tables.selectTable, '-----', tab.index, tab.name, tab.paneName)
 			},
-			addTab(targetName, action) {
-				let newTabName = ++this.tabIndex + '';
-				//(this.tables.tables || 
-				this.editableTabs.push({
-					title: 'New Tab',
-					name: newTabName,
-					content: ''
-				});
-				console.log(newTabName, action)
-				this.editableTabsValue = newTabName;
+			removeTab: function(name) {
+				//console.log(name)
 
-				//				this.$store.commit({
-				//					type: 'setTables',
-				//					tables: this.tables.tables || this.editableTabs,
-				//					selectIndex: newTabName,
-				//				})
-
-			},
-			removeTab(targetName) {
-				let tabs = this.editableTabs;
-				let activeName = this.editableTabsValue;
-				console.log(activeName, targetName)
-				if(activeName === targetName) {
+				let tabs = this.tables.tables;
+				let activeName = this.tables.selectTable;
+				if(activeName === name) {
 					tabs.forEach((tab, index) => {
-						if(tab.name === targetName) {
+						if(tab.index === name) {
 							let nextTab = tabs[index + 1] || tabs[index - 1];
 							if(nextTab) {
-								activeName = nextTab.name;
+								activeName = nextTab.index;
 							}
 						}
 					});
 				}
+				this.$store.commit({
+					type: 'setTables',
+					tables: tabs.filter(tab => tab.index !== name),
+					selectTable: activeName
+				})
+				this.$store.commit({
+					type: 'setRouterIndex',
+					url: activeName,
+					urlLocatoin: '#/index/'
+				})
 
-				this.editableTabsValue = activeName;
-				this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+				this.$store.commit({
+					type: 'removeRouterArr',
+					routerArr: this.routerArr.filter(tab => tab !== name),
+				})
 
-				//				this.$store.commit({
-				//					type: 'setTables',
-				//					tables: this.editableTabs,
-				//					selectIndex: activeName,
-				//				})
 			}
 		}
 	}
@@ -119,7 +87,6 @@
 		padding-left: 10px;
 		padding-right: 10px;
 	}
-	
 	/*.el-tabs .el-tabs__new-tab {
 		box-sizing: border-box;
 		margin-top: 11px;
