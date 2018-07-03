@@ -77,7 +77,8 @@
 	.el-tabs {
 		/*height: 100% !important;*/
 		box-sizing: border-box;
-		border: none;
+		/*border: none;*/
+		border-bottom: none;
 		box-shadow: none;
 		/*position: relative;
 		padding-top: 38px;*/

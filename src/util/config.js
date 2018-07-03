@@ -10,6 +10,7 @@ if(!Array.indexOf) {
 	}
 }
 
+
 var isIE = function() {
 	return(window.navigator.userAgent.indexOf("MSIE") >= 1);
 }

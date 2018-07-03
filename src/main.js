@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+//ali-iconfont
 import './assets/font/iconfont.css'
 import App from './App'
 import VuexStore from './util/vuex_store'

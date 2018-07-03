@@ -7,6 +7,7 @@
 </template>
 
 <style>
+	@import '//at.alicdn.com/t/font_714904_6of8rolg39x.css';
 	#asideDiv {
 		/*padding: 10px 15px;*/
 	}
@@ -17,6 +18,15 @@
 		/*border: none;*/
 	}
 	
+	.el-menu .iconfont {
+		display: inline-block;
+		vertical-align: middle;
+		margin-right: 5px;
+		width: 24px;
+		text-align: center;
+		font-size: 18px;
+	}
+	
 	.el-submenu__icon-arrow {
 		margin-top: -3px;
 	}
@@ -25,12 +35,12 @@
 <script>
 	const elItem = {
 		props: ['dt'],
-		template: '<el-menu-item :key="dt.index" :index="dt.index">{{dt.title}}</el-menu-item>'
+		template: '<el-menu-item :key="dt.index" :index="dt.index"><i :class="dt.icon"></i>{{dt.title}}</el-menu-item>'
 	}
 
 	const elGroup = {
 		props: ['children', 'dt'],
-		template: '<el-submenu :key="dt.index" :index="dt.index"><template slot="title"><i class="el-icon-location"></i><span slot="title">{{dt.title}}</span></template><compnent :is="item.component" :dt="item" :children="item.children" :key="item.index" v-for="item in children"></compnent></el-submenu>'
+		template: '<el-submenu :key="dt.index" :index="dt.index"><template slot="title"><i class="el-icon-tickets"></i><span slot="title">{{dt.title}}</span></template><compnent :is="item.component" :dt="item" :children="item.children" :key="item.index" v-for="item in children"></compnent></el-submenu>'
 	}
 
 	import { mapState } from 'vuex'
@@ -50,9 +60,15 @@
 		created: function() {
 			//index与router-path对应
 			let children = [{
+				title: '首页',
+				index: 'main_index',
+				icon: 'iconfont icon-yemian',
+				component: elItem
+			}, {
 				title: '组建1',
 				index: 'dt',
 				component: elGroup,
+				icon: 'iconfont icon-yemian',
 				children: [{
 					title: '组建1-1',
 					index: 'main_helloworld',
@@ -106,6 +122,7 @@
 						}, {
 							title: '组建1-3-1-2-3',
 							index: 'dtst1-3-1-2-3',
+							icon: '',
 							component: elItem
 						}]
 					}]
@@ -128,10 +145,6 @@
 					}]
 				}]
 			}, {
-				title: '组建2',
-				index: 'main_index',
-				component: elItem
-			}, {
 				title: '组建3',
 				index: 'dtst',
 				component: elGroup
@@ -143,7 +156,6 @@
 			let routerIndex = 'main_index'
 			this.$store.commit({
 				type: 'setDefault',
-				routerIndex: routerIndex,
 				routerArr: [routerIndex],
 				selectTable: routerIndex,
 				tables: [{
@@ -151,6 +163,17 @@
 					index: routerIndex,
 					closable: false
 				}],
+			})
+			//初始访问首页
+			this.$store.commit({
+				type: 'setRouterArr',
+				dt: {
+					title: '首页',
+					index: routerIndex,
+					content: '',
+					closable: false
+				},
+				urlLocatoin: '#/index/'
 			})
 
 		},
@@ -166,10 +189,14 @@
 				this.$store.commit({
 					type: 'setRouterArr',
 					mainUrl: 'index',
-					url: index,
 					router: this.$router,
-					title: vm.$el.innerText,
-					urlLocatoin: '#/index/'
+					urlLocatoin: '#/index/',
+					dt: {
+						title: vm.$el.innerText,
+						index: index,
+						content: '',
+						closable: true
+					}
 				})
 			}
 		}

@@ -59,15 +59,31 @@
 		},
 		created: function() {},
 		watch: {
-			$route: function(to, from) {
+			$route: function(to, from) { //监听页面路径
 				let nameArr = to.path.split('/')
 				let name = nameArr[nameArr.length - 1]
+				let historyTables = this.$store.state.historyTables;
+				let dt = historyTables.filter(arr => arr.index == name)[0]
+				console.log(dt, '----tables-dt')
 				this.$store.commit({
 					type: 'setRouterIndex',
 					url: name,
 					urlLocatoin: '#/index/'
 				})
-
+				if(dt) {
+					this.$store.commit({
+						type: 'setRouterArr',
+						mainUrl: 'index',
+						router: this.$router,
+						urlLocatoin: '#/index/',
+						dt: {
+							title: dt.title,
+							index: dt.index,
+							content: '',
+							closable: true
+						}
+					})
+				}
 			}
 		},
 		methods: {
