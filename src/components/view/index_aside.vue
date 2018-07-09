@@ -1,6 +1,6 @@
 <template>
 	<div id="asideDiv">
-		<el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" :default-active="selectTable" @select="selectItem" @close="handleClose" :collapse="asideClose">
+		<el-menu class="el-menu-vertical-demo" @open="handleOpen" :default-active="selectTable" @select="selectItem" @close="handleClose" :collapse="asideClose">
 			<compnent :is="item.component" :dt="item" :children="item.children" :key="item.index" v-for="item in view"></compnent>
 		</el-menu>
 	</div>
@@ -171,7 +171,8 @@
 					title: '首页',
 					index: routerIndex,
 					content: '',
-					closable: false
+					closable: false,
+					isFirst: true,
 				},
 				urlLocatoin: '#/index/'
 			})

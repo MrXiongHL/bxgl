@@ -34,7 +34,11 @@ export default new Router({
 				component: MainHelloWorld
 			}, {
 				path: 'main_index',
-				name: 'main_index',
+				name: 'main_index2',
+				component: MainIndex
+			}, {
+				path: '/',
+				name: 'main_index1',
 				component: MainIndex
 			}, {
 				path: '*',

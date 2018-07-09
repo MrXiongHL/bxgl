@@ -25,7 +25,7 @@
 <script>
 	import WindowBG from '@/util/window_bg';
 	export default {
-		name: 'index',
+		name: 'login',
 		data() {
 			return {
 				title: '登陆',

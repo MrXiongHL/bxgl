@@ -87,11 +87,11 @@ Vue.directive(moveName, {
 Vue.directive(changeName, {
 	inserted: function(el, binding) {
 		el.onmouseenter = function(e) {
-			el.style.cursor = binding.value.cursor || 'default';
+			el.style.cursor = binding.value.cursors || 'default';
 			el.style.backgroundColor = '#f5f7fa'
 		}
 		el.onmouseleave = function(e) {
-			el.style.cursor = binding.value.default || 'default';
+			el.style.cursor = binding.value.defaults || 'default';
 			el.style.backgroundColor = 'white'
 		}
 	}

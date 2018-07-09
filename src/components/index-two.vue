@@ -11,7 +11,7 @@
 						<!--other-view-->
 						<index-aside></index-aside>
 					</div>
-					<div class="elAsideBorder" id="elAsideBorder" v-move="{funcs:changeW,minWidth:minWidth,isChangeWH:true}" v-changeWH="changeWHCursor"></div>
+					<div class="elAsideBorder" v-show="isChangeWH" id="elAsideBorder" v-move="{funcs:changeW,minWidth:minWidth,isChangeWH:isChangeWH}" v-changeWH="changeWHCursor"></div>
 				</div>
 			</el-scrollbar>
 			<div :width="minWidth" v-show="show" @click="changeWidth" class="el-aside-show">
@@ -47,9 +47,10 @@
 				paddingTops: tops,
 				paddingBottoms: '40px',
 				changeWHCursor: {
-					cursor: 'e-resize',
-					default: 'default'
+					cursors: 'e-resize',
+					defaults: 'default'
 				},
+				isChangeWH: true, //是否可以拖动
 				vertical: true,
 			}
 		},
@@ -62,9 +63,11 @@
 			$route: function(to, from) { //监听页面路径
 				let nameArr = to.path.split('/')
 				let name = nameArr[nameArr.length - 1]
+				if(name === '') {
+					name = 'main_index'
+				}
 				let historyTables = this.$store.state.historyTables;
 				let dt = historyTables.filter(arr => arr.index == name)[0]
-				console.log(dt, '----tables-dt')
 				this.$store.commit({
 					type: 'setRouterIndex',
 					url: name,

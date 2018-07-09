@@ -38,9 +38,14 @@ export default new Vuex.Store({
 			if(has == -1) { //路由不存在则打开
 				state.routerArr.push(data.dt.index)
 				//push_router
-				data.router.push({
-					path: `/${data.mainUrl}/${data.url}`,
-				})
+				let rt = {
+					path: `/${data.mainUrl}/${data.dt.index}`,
+				};
+				if(data.dt.isFirst) {
+					data.router.replace(rt)
+				} else {
+					data.router.push(rt)
+				}
 				//index_main-data
 				state.tables.tables.push(data.dt)
 				state.historyTables.filter(arr => arr.index == data.dt.index).length <= 0 ? state.historyTables.push(data.dt) : ''
