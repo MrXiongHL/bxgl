@@ -19,7 +19,7 @@
 			}
 		},
 		created: function() {
-			console.log('created')
+			//console.log('created')
 		}
 	}
 </script>

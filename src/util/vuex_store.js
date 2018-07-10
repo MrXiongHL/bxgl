@@ -39,7 +39,7 @@ export default new Vuex.Store({
 				state.routerArr.push(data.dt.index)
 				//push_router
 				let rt = {
-					path: `/${data.mainUrl}/${data.dt.index}`,
+					path: data.mainUrl ? `/${data.mainUrl}/${data.dt.index}` : `/${data.dt.index}`,
 				};
 				if(data.dt.isFirst) {
 					data.router.replace(rt)
@@ -55,7 +55,7 @@ export default new Vuex.Store({
 			//改变路径不跳转
 			window.location.href = data.urlLocatoin + data.dt.index
 		},
-		setRouterIndex: function(state, data) {
+		setRouterIndex: function(state, data) { //设置当前菜单和浏览器路径
 			state.tables.selectTable = data.url
 			window.location.href = data.urlLocatoin + data.url
 		}

@@ -1,8 +1,9 @@
 <template>
 	<div>
 		<el-tabs v-model="tables.selectTable" type="border-card" @tab-remove="removeTab" @tab-click="selectTab">
-			<el-tab-pane :key="item.name" v-for="(item, index) in tables.tables" :label="item.title" :closable="item.closable" :name="item.index">
+			<el-tab-pane :key="item.name" v-for="(item, index) in tables.tables" :closable="item.closable" :name="item.index">
 				<!--<component :is="item.content"></component>-->
+				<span slot="label"><i :class="item.icon"></i> {{item.title}}</span>
 			</el-tab-pane>
 		</el-tabs>
 		<router-view></router-view>
@@ -74,12 +75,16 @@
 </script>
 
 <style>
+	i.iconfont {
+		font-size: inherit;
+	}
+	
 	.el-tabs {
 		/*height: 100% !important;*/
-		box-sizing: border-box;
+		box-sizing: border-box !important;
 		/*border: none;*/
-		border-bottom: none;
-		box-shadow: none;
+		border-bottom: none !important;
+		box-shadow: none !important;
 		/*position: relative;
 		padding-top: 38px;*/
 	}
@@ -87,6 +92,19 @@
 	.el-tabs .el-tabs__header {
 		padding-left: 10px;
 		padding-right: 10px;
+	}
+	
+	.el-tabs__nav-next, .el-tabs__nav-prev {
+		height: 39px !important;
+		line-height: 39px !important;
+		bottom: 0 !important;
+		top: 0 !important;
+	}
+	/*去除关闭标签时出现蓝色边框*/
+	
+	.el-tabs .el-tabs__item:focus.is-active.is-focus:not(:active) {
+		-webkit-box-shadow: none !important;
+		box-shadow: none !important;
 	}
 	/*.el-tabs .el-tabs__new-tab {
 		box-sizing: border-box;

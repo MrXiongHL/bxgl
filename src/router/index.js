@@ -18,34 +18,26 @@ Vue.use(Router)
 export default new Router({
 	routes: [{
 		path: '/',
-		name: 'index1',
-		component: Index
-	}, {
-		path: '/',
-		name: 'index2',
+		name: 'index-two',
 		component: Index,
 		children: [{
-			path: 'index',
-			name: 'index_main',
-			component: Index_main,
-			children: [{
-				path: 'main_helloworld',
-				name: 'main_helloworld',
-				component: MainHelloWorld
-			}, {
-				path: 'main_index',
-				name: 'main_index2',
-				component: MainIndex
-			}, {
-				path: '/',
-				name: 'main_index1',
-				component: MainIndex
-			}, {
-				path: '*',
-				name: 'nofile404c',
-				component: NoFile404
-			}]
+			path: 'main_index',
+			name: 'main_index1',
+			component: MainIndex
+		}, {
+			path: 'main_index',
+			name: 'main_index2',
+			component: MainIndex
+		}, {
+			path: 'main_helloworld',
+			name: 'main_helloworld',
+			component: MainHelloWorld
+		}, {
+			path: '*',
+			name: 'nofile404c',
+			component: NoFile404
 		}]
+
 	}, {
 		path: '/login',
 		name: 'login',

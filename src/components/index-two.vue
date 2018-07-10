@@ -1,28 +1,26 @@
 <template>
 	<div class="indexContainer" v-title :data-title="title">
-		<div class="indexHeader">
+		<div class="indexHeader" :style="{paddingLeft:paddingLefts}">
 			<!--other-view-->
 			indexHeader
 		</div>
-		<div class="indexAside" :style="{width:widths,paddingTop:paddingTops}">
+		<div class="indexAside" :style="{width:asideClose ? asideMinWidth:widths,paddingTop:'0px'}">
 			<el-scrollbar :vertical="vertical">
-				<div v-show="!show" class="el-aside-root">
+				<div class="el-aside-root">
 					<div>
 						<!--other-view-->
 						<index-aside></index-aside>
 					</div>
-					<div class="elAsideBorder" v-show="isChangeWH" id="elAsideBorder" v-move="{funcs:changeW,minWidth:minWidth,isChangeWH:isChangeWH}" v-changeWH="changeWHCursor"></div>
+					<div class="elAsideBorder" v-show="!asideClose" id="elAsideBorder" v-move="{funcs:changeW,minWidth:minWidth,isChangeWH:isChangeWH}" v-changeWH="changeWHCursor"></div>
 				</div>
 			</el-scrollbar>
-			<div :width="minWidth" v-show="show" @click="changeWidth" class="el-aside-show">
-				<i class="icons el-icon-caret-right"></i>
-			</div>
 		</div>
-		<div class="indexMain" :style="{paddingLeft:paddingLefts,paddingTop:paddingTops,paddingBottom:paddingBottoms}">
+		<div class="indexMain" :style="{paddingLeft:asideClose ? asideMinWidth:paddingLefts ,paddingTop:paddingTops,paddingBottom:paddingBottoms}">
 			<!--other-view-->
-			<router-view></router-view>
+			<!--<router-view></router-view>-->
+			<index-main></index-main>
 		</div>
-		<div class="indexFooter" :style="{paddingLeft:paddingLefts}">
+		<div class="indexFooter" :style="{paddingLeft:asideClose ? asideMinWidth:paddingLefts }">
 			<!--other-view-->
 			indexFooter
 		</div>
@@ -30,21 +28,24 @@
 </template>
 
 <script>
-	import TablePanel from './view/index_main';
-	import IndexAside from './view/index_aside';
+	import IndexMain from './view/index_main'
+	import IndexAside from './view/index_aside'
+
+	import { mapState } from 'vuex'
 	export default {
 		name: 'index-two',
 		data() {
 			let widths = '240px'
+			let asideMinWidth = '63px'
 			let tops = '55px'
 			return {
 				title: '首页',
-				show: false,
 				widths: widths,
 				defWidth: widths,
 				minWidth: widths,
 				paddingLefts: widths,
 				paddingTops: tops,
+				asideMinWidth: asideMinWidth,
 				paddingBottoms: '40px',
 				changeWHCursor: {
 					cursors: 'e-resize',
@@ -54,50 +55,18 @@
 				vertical: true,
 			}
 		},
+		computed: {
+			...mapState({
+				asideClose: state => state.asideClose
+			})
+		},
 		components: {
-			'table-panel': TablePanel,
+			'index-main': IndexMain,
 			'index-aside': IndexAside,
 		},
 		created: function() {},
-		watch: {
-			$route: function(to, from) { //监听页面路径
-				let nameArr = to.path.split('/')
-				let name = nameArr[nameArr.length - 1]
-				if(name === '') {
-					name = 'main_index'
-				}
-				let historyTables = this.$store.state.historyTables;
-				let dt = historyTables.filter(arr => arr.index == name)[0]
-				this.$store.commit({
-					type: 'setRouterIndex',
-					url: name,
-					urlLocatoin: '#/index/'
-				})
-				if(dt) {
-					this.$store.commit({
-						type: 'setRouterArr',
-						mainUrl: 'index',
-						router: this.$router,
-						urlLocatoin: '#/index/',
-						dt: {
-							title: dt.title,
-							index: dt.index,
-							content: '',
-							closable: true
-						}
-					})
-				}
-			}
-		},
-		methods: {
-			changeWidth: function() {
-				this.$nextTick(function() {
-					this.show = !this.show
-					this.widths = (this.widths === this.minWidth ? this.defWidth : this.minWidth)
-					this.paddingLefts = this.widths;
-				})
 
-			},
+		methods: {
 			changeW: function(dt) {
 				//console.log(this.widths, parseInt(dt.width));
 				this.widths = dt.width;
@@ -141,7 +110,7 @@
 	div.indexAside {
 		position: absolute;
 		top: 0px;
-		z-index: 8;
+		z-index: 10;
 		height: 100%;
 		/*border-right: 1px solid darkgray;*/
 		/*background-color: gainsboro;*/

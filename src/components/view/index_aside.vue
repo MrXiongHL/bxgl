@@ -1,5 +1,6 @@
 <template>
 	<div id="asideDiv">
+		<button @click="closeElMenu">close</button>
 		<el-menu class="el-menu-vertical-demo" @open="handleOpen" :default-active="selectTable" @select="selectItem" @close="handleClose" :collapse="asideClose">
 			<compnent :is="item.component" :dt="item" :children="item.children" :key="item.index" v-for="item in view"></compnent>
 		</el-menu>
@@ -18,13 +19,14 @@
 		/*border: none;*/
 	}
 	
-	.el-menu .iconfont {
+	.el-menu i.iconfont,
+	.el-menu i {
 		display: inline-block;
 		vertical-align: middle;
 		margin-right: 5px;
 		width: 24px;
 		text-align: center;
-		font-size: 18px;
+		font-size: inherit !important;
 	}
 	
 	.el-submenu__icon-arrow {
@@ -35,12 +37,49 @@
 <script>
 	const elItem = {
 		props: ['dt'],
-		template: '<el-menu-item :key="dt.index" :index="dt.index"><i :class="dt.icon"></i>{{dt.title}}</el-menu-item>'
+		//		template: `<el-menu-item :key="dt.index" :index="dt.index">
+		//			    <i :class="dt.icon"></i>
+		//		   		<template slot="title">
+		//			      	<span slot="title">{{dt.title}}</span>
+		//		      	</template>
+		//		   	</el-menu-item>`,
+		render: function(r) {
+			let dt = this.dt
+			return r('el-menu-item', {
+				attrs: {
+					key: dt.index,
+					index: dt.index
+				}
+			}, [
+				r('i', {
+					class: dt.icon
+				}),
+				r('template', {
+					slot: 'title',
+				}, [
+					r('span', {
+						slot: 'title',
+						attrs: {
+							dt: 'title'
+						},
+						domProps: {
+							innerHTML: dt.title
+						},
+					})
+				])
+			])
+		}
 	}
 
 	const elGroup = {
 		props: ['children', 'dt'],
-		template: '<el-submenu :key="dt.index" :index="dt.index"><template slot="title"><i class="el-icon-tickets"></i><span slot="title">{{dt.title}}</span></template><compnent :is="item.component" :dt="item" :children="item.children" :key="item.index" v-for="item in children"></compnent></el-submenu>'
+		template: `	<el-submenu :key="dt.index" :index="dt.index">
+						<template slot="title">
+							<i class="el-icon-tickets"></i>
+							<span slot="title">{{dt.title}}</span>
+						</template>
+						<compnent :is="item.component" :dt="item" :children="item.children" :key="item.index" v-for="item in children"></compnent>
+				   	</el-submenu>`
 	}
 
 	import { mapState } from 'vuex'
@@ -54,8 +93,41 @@
 		computed: {
 			...mapState({
 				selectTable: state => state.tables.selectTable,
-				asideClose: state => state.asideClose
+				asideClose: state => state.asideClose,
+				historyTables: state => state.historyTables
 			}),
+		},
+		watch: {
+			$route: function(to, from) { //监听页面路径
+				let nameArr = to.path.split('/')
+				let name = nameArr[nameArr.length - 1]
+				if(name === '') {
+					name = 'main_index'
+				}
+				let historyTables = this.historyTables;
+				let dt = historyTables.filter(arr => arr.index == name)[0]
+				//console.log(dt)
+				this.$store.commit({
+					type: 'setRouterIndex',
+					url: name,
+					urlLocatoin: '#/'
+				})
+				if(dt) {
+					this.$store.commit({
+						type: 'setRouterArr',
+						mainUrl: '',
+						router: this.$router,
+						urlLocatoin: '#/',
+						dt: {
+							title: dt.title,
+							index: dt.index,
+							content: dt.content,
+							icon: dt.icon,
+							closable: dt.closable
+						}
+					})
+				}
+			}
 		},
 		created: function() {
 			//index与router-path对应
@@ -77,6 +149,7 @@
 				}, {
 					title: '组建1-2',
 					index: 'main_dd',
+					icon: 'iconfont icon-yemian',
 					component: elItem
 				}, {
 					title: '组建1-3-1-group',
@@ -85,6 +158,7 @@
 					children: [{
 						title: '组建1-3-1-1',
 						index: 'dts1-3-1-1',
+						icon: 'iconfont icon-open-panel',
 						component: elItem,
 					}, {
 						title: '组建1-3-1-2',
@@ -101,6 +175,7 @@
 						}, {
 							title: '组建1-3-1-1-2',
 							index: 'dts1-3-1-1-2',
+							icon: 'iconfont icon-yonghu',
 							component: elItem
 						}, {
 							title: '组建1-3-1-1-3',
@@ -114,6 +189,7 @@
 						children: [{
 							title: '组建1-3-1-2-1',
 							index: 'dts1-3-1-2-1',
+							icon: 'iconfont icon-mimaicon',
 							component: elItem,
 						}, {
 							title: '组建1-3-1-2-2',
@@ -161,6 +237,7 @@
 				tables: [{
 					title: '首页',
 					index: routerIndex,
+					icon: 'iconfont icon-yemian',
 					closable: false
 				}],
 			})
@@ -171,31 +248,39 @@
 					title: '首页',
 					index: routerIndex,
 					content: '',
+					icon: 'iconfont icon-yemian',
 					closable: false,
 					isFirst: true,
 				},
-				urlLocatoin: '#/index/'
+				urlLocatoin: '#/'
 			})
 
 		},
 		methods: {
-			handleOpen(key, keyPath) {
-				//console.log(key, keyPath);
+			closeElMenu() {
+				this.$store.commit({
+					type: 'setAsideClose',
+					asideClose: !this.asideClose
+				})
+			},
+			handleOpen(key, keyPath) { //console.log(key, keyPath);
 			},
 			handleClose(key, keyPath) {
 				//console.log(key, keyPath);
 			},
 			selectItem(index, indexPath, vm) {
-				//console.log("选中", index, indexPath, vm.$el.innerText)
+				//				console.log("选中", index, indexPath, vm.$el.querySelector('i').getAttribute('class'))
+				let icons = vm.$el.querySelector('i').getAttribute('class')
 				this.$store.commit({
 					type: 'setRouterArr',
-					mainUrl: 'index',
+					mainUrl: '',
 					router: this.$router,
-					urlLocatoin: '#/index/',
+					urlLocatoin: '#/',
 					dt: {
 						title: vm.$el.innerText,
 						index: index,
 						content: '',
+						icon: icons,
 						closable: true
 					}
 				})
