@@ -1,19 +1,17 @@
 <template>
 	<div class="indexContainer" v-title :data-title="title">
-		<div class="indexHeader" :style="{paddingLeft:paddingLefts}">
+		<div class="indexHeader el-header--primary" :style="{height:paddingTops}">
 			<!--other-view-->
-			indexHeader
+			<index-header></index-header>
 		</div>
-		<div class="indexAside" :style="{width:asideClose ? asideMinWidth:widths,paddingTop:'0px'}">
+		<div class="indexAside" :style="{width:asideClose ? asideMinWidth:widths,paddingTop:paddingTops}">
 			<el-scrollbar :vertical="vertical">
 				<div class="el-aside-root">
-					<div>
-						<!--other-view-->
-						<index-aside></index-aside>
-					</div>
-					<div class="elAsideBorder" v-show="!asideClose" id="elAsideBorder" v-move="{funcs:changeW,minWidth:minWidth,isChangeWH:isChangeWH}" v-changeWH="changeWHCursor"></div>
+					<!--other-view-->
+					<index-aside></index-aside>
 				</div>
 			</el-scrollbar>
+			<div class="elAsideBorder" v-show="!asideClose" id="elAsideBorder" v-changeWH="{funcs:changeW,minWidth:minWidth,isChangeWH:isChangeWH}" v-hover="changeWHCursor"></div>
 		</div>
 		<div class="indexMain" :style="{paddingLeft:asideClose ? asideMinWidth:paddingLefts ,paddingTop:paddingTops,paddingBottom:paddingBottoms}">
 			<!--other-view-->
@@ -22,7 +20,7 @@
 		</div>
 		<div class="indexFooter" :style="{paddingLeft:asideClose ? asideMinWidth:paddingLefts }">
 			<!--other-view-->
-			indexFooter
+			<index-footer></index-footer>
 		</div>
 	</div>
 </template>
@@ -30,6 +28,8 @@
 <script>
 	import IndexMain from './view/index_main'
 	import IndexAside from './view/index_aside'
+	import IndexHeader from './view/index_header'
+	import IndexFooter from './view/index_footer'
 
 	import { mapState } from 'vuex'
 	export default {
@@ -37,7 +37,7 @@
 		data() {
 			let widths = '240px'
 			let asideMinWidth = '63px'
-			let tops = '55px'
+			let tops = '66px'
 			return {
 				title: '首页',
 				widths: widths,
@@ -63,6 +63,8 @@
 		components: {
 			'index-main': IndexMain,
 			'index-aside': IndexAside,
+			'index-header': IndexHeader,
+			'index-footer': IndexFooter,
 		},
 		created: function() {},
 
@@ -101,16 +103,15 @@
 		width: 100%;
 		z-index: 9;
 		top: 0px;
-		height: 55px;
 		/*background-color: gainsboro;*/
 		text-align: center;
-		line-height: 55px;
 	}
 	
 	div.indexAside {
 		position: absolute;
 		top: 0px;
-		z-index: 10;
+		z-index: 8;
+		/*8,10*/
 		height: 100%;
 		/*border-right: 1px solid darkgray;*/
 		/*background-color: gainsboro;*/
@@ -165,7 +166,8 @@
 	
 	div.indexFooter {
 		position: absolute;
-		z-index: 7;
+		z-index: 9;
+		/*7,9*/
 		bottom: 0px;
 		width: 100%;
 		height: 40px;

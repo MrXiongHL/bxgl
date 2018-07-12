@@ -28,3 +28,10 @@ npm test
 
 ```
 <font color="#dd0000">element-ui NavMeun 使用动态数据方式加载  [链接](https://github.com/MrXiongHL/bxgl/blob/master/src/components/view/index_aside.vue)</font> 
+```
+更改主题
+	1.使用element-ui主题生成工具（et）
+	2.构建默认scss文件
+	3.先生成默认样式，并使用压缩css工具压缩(替换"\为 "\\)
+	4.复制css内容放入/util/theme/themeStyle.js
+```

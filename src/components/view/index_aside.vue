@@ -1,6 +1,6 @@
 <template>
 	<div id="asideDiv">
-		<button @click="closeElMenu">close</button>
+		<el-button @click="closeElMenu" class="el-button--primary">close</el-button>
 		<el-menu class="el-menu-vertical-demo" @open="handleOpen" :default-active="selectTable" @select="selectItem" @close="handleClose" :collapse="asideClose">
 			<compnent :is="item.component" :dt="item" :children="item.children" :key="item.index" v-for="item in view"></compnent>
 		</el-menu>
@@ -29,8 +29,17 @@
 		font-size: inherit !important;
 	}
 	
+	.el-menu--collapse>.el-menu-item.is-active i {
+		/*color: gold;*/
+	}
+	
 	.el-submenu__icon-arrow {
 		margin-top: -3px;
+	}
+	
+	.el-menu--collapse .el-menu .el-submenu,
+	.el-menu--popup {
+		min-width: 240px;
 	}
 </style>
 
@@ -83,6 +92,8 @@
 	}
 
 	import { mapState } from 'vuex'
+	
+	const urlLocatoin = '#/'
 	export default {
 		name: 'index-aside',
 		data() {
@@ -110,14 +121,14 @@
 				this.$store.commit({
 					type: 'setRouterIndex',
 					url: name,
-					urlLocatoin: '#/'
+					urlLocatoin: urlLocatoin
 				})
 				if(dt) {
 					this.$store.commit({
 						type: 'setRouterArr',
 						mainUrl: '',
 						router: this.$router,
-						urlLocatoin: '#/',
+						urlLocatoin: urlLocatoin,
 						dt: {
 							title: dt.title,
 							index: dt.index,
@@ -252,7 +263,7 @@
 					closable: false,
 					isFirst: true,
 				},
-				urlLocatoin: '#/'
+				urlLocatoin: urlLocatoin
 			})
 
 		},
@@ -262,6 +273,8 @@
 					type: 'setAsideClose',
 					asideClose: !this.asideClose
 				})
+				//change-theme
+
 			},
 			handleOpen(key, keyPath) { //console.log(key, keyPath);
 			},
@@ -275,7 +288,7 @@
 					type: 'setRouterArr',
 					mainUrl: '',
 					router: this.$router,
-					urlLocatoin: '#/',
+					urlLocatoin: urlLocatoin,
 					dt: {
 						title: vm.$el.innerText,
 						index: index,

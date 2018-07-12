@@ -1,8 +1,9 @@
 import Vue from 'vue'
 
-const moveName = 'move';
-const changeName = 'changeWH';
+const changeWHName = 'changeWH';
+const hoverName = 'hover';
 const titleName = 'title';
+const moveName = 'move'
 
 // 注册一个全局自定义指令 `v-title`//设置浏览器标题
 Vue.directive(titleName, {
@@ -13,8 +14,8 @@ Vue.directive(titleName, {
 	}
 })
 
-//拖动元素
-Vue.directive(moveName, {
+//拖动改变宽度元素
+Vue.directive(changeWHName, {
 	inserted: function(el, binding) {
 		el.onmousedown = function(e) {
 			let disx = e.pageX - el.offsetLeft;
@@ -25,14 +26,14 @@ Vue.directive(moveName, {
 			let htmlCss
 			let bodyCss
 			if(binding.value.isChangeWH) {
-				selectStyle = '-moz-user-select: none; -khtml-user-select: none; user-select: none;'
+				selectStyle = '-moz-user-select: none; -khtml-user-select: none; user-select: none; -webkit-user-select: none;'
 				htmlCss = document.querySelector('html').style.cssText
 				bodyCss = document.body.style.cssText
 				htmlCss = bodyCss = selectStyle
 			}
 			document.onmousemove = function(e) {
 				let direction = e.pageX - ePGX;
-				if(binding.name === moveName && !binding.value.isChangeWH) {
+				if(binding.name === changeWHName && !binding.value.isChangeWH) {
 					if(el.offsetLeft <= 0 && direction < 0) {
 						return;
 					}
@@ -58,7 +59,7 @@ Vue.directive(moveName, {
 				//console.log(el.style.cursor + 'd', el.parentNode.clientWidth, e.pageX, disx, el.offsetLeft);
 			}
 			document.onmouseup = function() {
-				if(binding.name === moveName && !binding.value.isChangeWH) {
+				if(binding.name === changeWHName && !binding.value.isChangeWH) {
 					if(el.offsetLeft < 0) {
 						el.style.left = 0 + 'px';
 					} else if(el.offsetLeft + el.clientWidth > 500) {
@@ -84,15 +85,15 @@ Vue.directive(moveName, {
 })
 
 //鼠标指针改变
-Vue.directive(changeName, {
+Vue.directive(hoverName, {
 	inserted: function(el, binding) {
 		el.onmouseenter = function(e) {
 			el.style.cursor = binding.value.cursors || 'default';
-			el.style.backgroundColor = '#f5f7fa'
+			//el.style.backgroundColor = '#f5f7fa'
 		}
 		el.onmouseleave = function(e) {
 			el.style.cursor = binding.value.defaults || 'default';
-			el.style.backgroundColor = 'white'
+			//el.style.backgroundColor = 'white'
 		}
 	}
 })

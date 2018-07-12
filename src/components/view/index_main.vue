@@ -10,7 +10,8 @@
 	</div>
 </template>
 <script>
-	import { mapState } from 'vuex';
+	import { mapState } from 'vuex'
+	const urlLocatoin = '#/'
 	export default {
 		name: 'index-main',
 		data() {
@@ -34,13 +35,12 @@
 				this.$store.commit({
 					type: 'setRouterIndex',
 					url: tbN,
-					urlLocatoin: '#/index/'
+					urlLocatoin: urlLocatoin
 				})
 				//console.log(this.tables.selectTable, '-----', tab.index, tab.name, tab.paneName)
 			},
 			removeTab: function(name) {
 				//console.log(name)
-
 				let tabs = this.tables.tables;
 				let activeName = this.tables.selectTable;
 				if(activeName === name) {
@@ -61,7 +61,7 @@
 				this.$store.commit({
 					type: 'setRouterIndex',
 					url: activeName,
-					urlLocatoin: '#/index/'
+					urlLocatoin: urlLocatoin
 				})
 
 				this.$store.commit({
@@ -94,7 +94,8 @@
 		padding-right: 10px;
 	}
 	
-	.el-tabs__nav-next, .el-tabs__nav-prev {
+	.el-tabs__nav-next,
+	.el-tabs__nav-prev {
 		height: 39px !important;
 		line-height: 39px !important;
 		bottom: 0 !important;

@@ -3,8 +3,14 @@
 import Vue from 'vue'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+
+//主题-命令行生成
+//import '../static/theme/409EFF/index.css'
+//主题-scss
+//import './theme/element-variables.scss'
+
 //ali-iconfont
-import './assets/font/iconfont.css'
+import '../static/font/iconfont.css'
 import App from './App'
 import VuexStore from './util/vuex_store'
 import router from './router'
