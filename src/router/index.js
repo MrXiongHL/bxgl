@@ -16,6 +16,7 @@ const MainHelloWorld = resolve => require(['@/components/view/main/helloWorld'],
 Vue.use(Router)
 
 export default new Router({
+	//mode: 'history',
 	routes: [{
 		path: '/',
 		name: 'index-two',

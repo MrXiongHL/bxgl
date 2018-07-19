@@ -16,7 +16,7 @@
 	.el-menu {
 		/*background-color: black;*/
 		/* text-color="#ffffff"*/
-		/*border: none;*/
+		border: none !important;
 	}
 	
 	.el-menu i.iconfont,
@@ -24,7 +24,7 @@
 		display: inline-block;
 		vertical-align: middle;
 		margin-right: 5px;
-		width: 24px;
+		width: 24px !important;
 		text-align: center;
 		font-size: inherit !important;
 	}
@@ -34,12 +34,12 @@
 	}
 	
 	.el-submenu__icon-arrow {
-		margin-top: -3px;
+		margin-top: -3px !important;
 	}
 	
 	.el-menu--collapse .el-menu .el-submenu,
 	.el-menu--popup {
-		min-width: 240px;
+		min-width: 220px !important;
 	}
 </style>
 

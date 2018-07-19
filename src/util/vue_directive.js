@@ -9,8 +9,7 @@ const moveName = 'move'
 Vue.directive(titleName, {
 	// 当被绑定的元素插入到 DOM 中时……
 	inserted: function(el, d, c, b) {
-		// 修复IE10及以下版本不支持dataset属性的问题，兼容transfer-dom.js中使用了dataset的问题 <code in index.html>
-		document.title = el.dataset.title;
+		document.title = d.value;
 	}
 })
 
@@ -87,13 +86,53 @@ Vue.directive(changeWHName, {
 //鼠标指针改变
 Vue.directive(hoverName, {
 	inserted: function(el, binding) {
-		el.onmouseenter = function(e) {
-			el.style.cursor = binding.value.cursors || 'default';
-			//el.style.backgroundColor = '#f5f7fa'
+		let els = binding.value.needParent ? el.parentNode : el
+		els.onmouseenter = function(e) {
+			els.style.cursor = binding.value.cursors || 'default';
+			els.style.backgroundColor = '#f5f7fa'
 		}
-		el.onmouseleave = function(e) {
-			el.style.cursor = binding.value.defaults || 'default';
-			//el.style.backgroundColor = 'white'
+		els.onmouseleave = function(e) {
+			els.style.cursor = binding.value.defaults || 'default';
+			els.style.backgroundColor = 'transparent'
+		}
+		//console.log(binding.value)
+	}
+})
+
+//拖动
+Vue.directive(moveName, {
+	inserted: function(el, binding) {
+		//console.log('move', binding.value)
+		let els = binding.value.needParent ? el.parentNode : el
+		let dialog = el.parentNode.parentNode
+
+		els.onmousedown = function(dEvent) {
+			let dX = dEvent.pageX - dEvent.offsetX
+			let dY = dEvent.pageY - dEvent.offsetY
+			let oldPageX = dEvent.pageX
+			let oldPageY = dEvent.pageY
+			//let getComputedStyles = (document.defaultView.getComputedStyle || window.getComputedStyle)
+			//let dialogMR = getComputedStyles(dialog).marginRight
+			//dialogMR = parseFloat(dialogMR)
+			//let dialogMB = getComputedStyles(dialog).marginBottom
+			//dialogMB = parseFloat(dialogMB)
+
+			document.onmousemove = function(mEvent) {
+				let mX = dX + (mEvent.pageX - oldPageX)
+				let mY = dY + (mEvent.pageY - oldPageY)
+
+				if(mX <= 0 || mY <= 0 || (mX + dialog.clientWidth) >= document.body.clientWidth || (mY + dialog.clientHeight) >= document.body.clientHeight) {
+					return
+				}
+				dialog.style.marginLeft = mX + "px"
+				dialog.style.marginTop = mY + "px"
+			}
+
+			document.onmouseup = function(uEvent) {
+
+				document.onmousemove = document.onmouseup = null
+			}
+
 		}
 	}
 })

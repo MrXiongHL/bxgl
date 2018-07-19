@@ -4,22 +4,21 @@ import Vue from 'vue'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
-//主题-命令行生成
-//import '../static/theme/409EFF/index.css'
-//主题-scss
-//import './theme/element-variables.scss'
+//const MainIndex = resolve => require(['@/components/view/main/index'], resolve)
 
 //ali-iconfont
 import '../static/font/iconfont.css'
 import App from './App'
+
 import VuexStore from './util/vuex_store'
+//const VuexStore = resolve => require(['@/util/vuex_store'], resolve)
 import router from './router'
 import './util/config'
+//自定义指令
+import './util/vue_directive'
 
 
 Vue.use(ElementUI);
-//自定义指令
-import './util/vue_directive'
 
 Vue.config.productionTip = false
 Vue.config.debug = true;

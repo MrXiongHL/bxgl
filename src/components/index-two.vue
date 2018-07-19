@@ -1,5 +1,5 @@
 <template>
-	<div class="indexContainer" v-title :data-title="title">
+	<div class="indexContainer" v-title="title">
 		<div class="indexHeader el-header--primary" :style="{height:paddingTops}">
 			<!--other-view-->
 			<index-header></index-header>
@@ -35,7 +35,7 @@
 	export default {
 		name: 'index-two',
 		data() {
-			let widths = '240px'
+			let widths = '260px'
 			let asideMinWidth = '63px'
 			let tops = '66px'
 			return {
@@ -67,7 +67,6 @@
 			'index-footer': IndexFooter,
 		},
 		created: function() {},
-
 		methods: {
 			changeW: function(dt) {
 				//console.log(this.widths, parseInt(dt.width));
@@ -101,16 +100,16 @@
 	div.indexHeader {
 		position: absolute;
 		width: 100%;
-		z-index: 9;
+		z-index: 11;
 		top: 0px;
 		/*background-color: gainsboro;*/
-		text-align: center;
+		/*text-align: center;*/
 	}
 	
 	div.indexAside {
 		position: absolute;
 		top: 0px;
-		z-index: 8;
+		z-index:10;
 		/*8,10*/
 		height: 100%;
 		/*border-right: 1px solid darkgray;*/
@@ -129,10 +128,12 @@
 	
 	div.indexAside .el-scrollbar {
 		height: 100%;
+		overflow-x: hidden;
 	}
 	
 	div.indexAside .el-scrollbar__wrap {
-		overflow-x: hidden;
+		overflow-x: hidden !important;
+		margin-right: -16px !important;
 	}
 	
 	div.indexAside .el-aside-root {
@@ -173,8 +174,8 @@
 		height: 40px;
 		/*border-left: 200px solid transparent;*/
 		/*padding-left: 200px;*/
-		text-align: center;
+		/*text-align: center;*/
 		line-height: 40px;
-		/*background-color: gainsboro;*/
+		background-color: gainsboro;
 	}
 </style>

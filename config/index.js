@@ -40,7 +40,7 @@ module.exports = {
     // https://vue-loader.vuejs.org/en/options.html#cachebusting
     cacheBusting: true,
 
-    cssSourceMap: false//打包时是否生成map
+    cssSourceMap: true
   },
 
   build: {
@@ -56,7 +56,7 @@ module.exports = {
      * Source Maps
      */
 
-    productionSourceMap: true,
+    productionSourceMap: true,//是否生成map文件
     // https://webpack.js.org/configuration/devtool/#production
     devtool: '#source-map',
 
