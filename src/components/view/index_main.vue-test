@@ -81,7 +81,7 @@
 </style>
 
 <script>
-	import { mapState } from 'vuex'
+	import { mapState,mapGetters } from 'vuex'
 	const urlLocatoin = '#/'
 	export default {
 		name: 'index-main',
@@ -113,8 +113,13 @@
 		computed: {
 			...mapState({
 				tables: state => state.tables,
-				routerArr: state => state.routerArr
+				routerArr: state => state.routerArr,
+				storeAtitle:state=>state.storeA.title,
 			}),
+			...mapGetters('storeA',{
+				gettitle1:'getTitle',
+				gettitle2:'getTitle2',
+			})
 		},
 		watch: {
 			'$store.state.tables.tables': function(to, from) {
@@ -124,7 +129,15 @@
 					incl.push(inclOld[k].index)
 				}
 				this.cache = incl
-				//console.log(incl)
+				console.log(this.$store.getters['storeA/getTitle']('追加title'))
+				console.log(this.$store.getters['storeA/getTitle2']('追加title2'))
+				console.log(this.gettitle2('追加title'))
+				this.$store.commit({
+					type: 'storeA/setTitle',
+					title: '新标题',
+				})
+				console.log(this.gettitle2('追加title2'))
+				console.log('storeAtitle',this.storeAtitle)
 			}
 		},
 		methods: {

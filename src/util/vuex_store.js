@@ -2,7 +2,32 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex)
 
+const storeA = { //test
+	namespaced: true,
+	state: {
+		title: 'storeA-标题'
+	},
+	mutations: {
+		setTitle: function(state, data) {
+			state.title = data.title
+		}
+	},
+	getters: {
+		getTitle: function(state, getters, rootState) {
+			return function(d) {
+				return state.title + d
+			}
+		},
+		getTitle2: (state, getters, rootState) => (d) => {
+			return state.title + d
+		}
+	}
+}
+
 export default new Vuex.Store({
+	modules: {
+		storeA,
+	},
 	state: {
 		routerArr: [], //存储路由history
 		asideClose: false,

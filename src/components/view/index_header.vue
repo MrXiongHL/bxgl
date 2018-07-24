@@ -1,11 +1,17 @@
 <template>
 	<div style="indexHeader-header">
 		<el-row>
-			<el-col :span="2">
+			<el-col :span="3">
 				<theme-color></theme-color>
 			</el-col>
-			<el-col :span="2">
+			<el-col :span="3">
 				<el-button @click="dialogVisible = true">Dialog</el-button>
+			</el-col>
+			<el-col :span="3">
+				<el-button @click="func('x')('xxx')('xxx3')">()=>()=>{}1</el-button>
+			</el-col>
+			<el-col :span="3">
+				<el-button @click="func2('x')('xxx')('xxx3')">()=>()=>{}2</el-button>
 			</el-col>
 		</el-row>
 
@@ -45,6 +51,16 @@
 		methods: {
 			alerts: function(msg) {
 				alert(msg)
+			},
+			func: (xx) => (xx2) => (xx3) => {
+				console.log(xx, xx2, xx3)
+			},
+			func2: function(xx) {
+				return function(xx2) {
+					return function(xx3) {
+						console.log(xx, xx2, xx3)
+					}
+				}
 			}
 		}
 	}
