@@ -4,8 +4,11 @@
 			<el-col :span="3">
 				<theme-color></theme-color>
 			</el-col>
+			<el-col :span="3">
+				<el-button @click="dialogVisible=!dialogVisible">button</el-button>
+			</el-col>
 		</el-row>
-
+		
 		<el-my-dialog :dialogVisible.sync="dialogVisible">
 			<span slot="dialog-body">这是一段信息
 				<el-button @click="alerts('消息啊')" type="primary">按钮</el-button>

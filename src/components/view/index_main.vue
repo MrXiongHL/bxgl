@@ -1,24 +1,30 @@
 <template>
 	<div id="main-tab">
-		<!--<el-tabs ref="tabs" v-model="tables.selectTable" type="border-card" @tab-remove="removeTab" @tab-click="selectTab">
-			<el-tab-pane :key="item.name" v-for="(item, index) in tables.tables" :closable="item.closable" :name="item.index">-->
-		<!--<component :is="item.content"></component>-->
-		<!--<span slot="label"><i :class="item.icon"></i> {{item.title}}</span>
+		<el-tabs ref="tabs" v-model="active" type="border-card" @tab-remove="removeTab" @tab-click="selectTab">
+			<el-tab-pane :key="item.name" v-for="(item, index) in mainView" :closable="item.closable" :name="item.index">
+				<component :is="item.content"></component>
+				<span slot="label"><i :class="item.icon"></i> {{item.title}}</span>
 			</el-tab-pane>
-		</el-tabs>-->
+		</el-tabs>
 		<div id="main-body" :style="mainBodyStyle">
-			<keep-alive :include="cache">
-				<router-view></router-view>
-			</keep-alive>
+			<el-scrollbar ref="elScrollbar" :vertical="false" :noresize="false" :viewStyle="{padding:'10px 10px'}">
+				<keep-alive :include="cache">
+					<router-view></router-view>
+				</keep-alive>
+			</el-scrollbar>
 		</div>
 	</div>
 </template>
 
 <style>
-	#main-body {
+	#main-tab {
 		height: 100%;
 		/*background-color: gold;*/
 		overflow: hidden;
+	}
+	
+	#main-body {
+		height: 100%;
 	}
 	
 	i.iconfont {
@@ -70,6 +76,14 @@
 		padding: 0 !important;
 		overflow: auto;
 	}
+	
+	.el-scrollbar {
+		height: 100%;
+	}
+	
+	.el-scrollbar__wrap {
+		overflow-x: hidden !important;
+	}
 </style>
 
 <script>
@@ -80,9 +94,9 @@
 		data() {
 			return {
 				vertical: true,
-				cache: [], //缓存页面
+				cache: [], //缓存页面,匹配组件的name
 				mainBodyStyle: {
-					height: 100 + 'px'
+					height: '100%'
 				}
 			}
 		},
@@ -100,45 +114,141 @@
 					}
 					timers = setTimeout(that.resizeMain, 1000)
 				})
-				
-				resizeMains()
+
+				setTimeout(function() {
+					resizeMains()
+				}, 1000)
 			})
 		},
 		computed: {
-			...mapState({}),
+			//			mainView: { //state => state.active
+			//				set: function(val) {
+			//					this.$store.commit({
+			//						type: 'setMainView',
+			//						mainView: val
+			//					})
+			//				},
+			//				get: function() {
+			//					return this.$store.state.mainView
+			//				}
+			//			},
+			...mapState({
+				mainView: state => state.mainView,
+				historyMainView: state => state.historyMainView
+			}),
+			active: { //state => state.active
+				set: function(val) {},
+				get: function() {
+					return this.$store.state.active
+				}
+			}
 		},
 		watch: {
 			$route: function(to, from) {
-				console.log("matched：", this.$route.matched)
+				//console.log("$route：", to)
+				let open_item = null //取出mainView 与to.path相等的
+				//设置keep-alive,页面缓存
+				this.cache = this.mainView.map(function(item) {
+					if(item.index == to.path) {
+						open_item = item
+					}
+					return item.index.substring(1)
+				})
+				//从左右历史路由内取出单个路由记录
+				if(!open_item) {
+					let dt = null;
+					this.historyMainView.forEach(function(item) {
+						if(item.index == to.path) {
+							dt = item
+						}
+					})
+					if(dt) {
+						this.$store.commit({
+							type: 'openRoute',
+							router: this.$router,
+							dt: dt
+						})
+					}
+
+				} else { //已经打开了就切换
+					this.$store.commit({
+						type: 'setActive',
+						active: to.path,
+						router: this.$router
+					})
+
+				}
+
+				//				this.$store.commit({
+				//					type: 'openRoute',
+				//					dt: {
+				//						title: vm.$el.innerText,
+				//						index: index,
+				//						content: '',
+				//						icon: icons,
+				//						closable: true
+				//					}
+				//				})
+				//console.log(this.cache)
 			}
 		},
 		methods: {
 			resizeMain: function() {
-				let parent = document.getElementById('main-tab').parentNode
-				console.log(parent.style.paddingTop)
-				let getComputedStyles = (document.defaultView.getComputedStyle || window.getComputedStyle || function(el) {
-					return el.currentStyle
-				})
+				let main_tab_height = document.getElementById('main-tab').clientHeight
+				let el_tabs_height = document.getElementsByClassName('el-tabs')[0].clientHeight
+				//console.log(main_tab_height, el_tabs_height)
 
-				let parentH = parent.clientHeight //parseFloat(getComputedStyles(parent).height)
-				let parentPadT = parseFloat(getComputedStyles(parent).paddingTop) ||
-					document.getElementsByClassName('indexHeader')[0].clientHeight
-				let parentPadB = parseFloat(getComputedStyles(parent).paddingBottom)||
-					document.getElementsByClassName('indexFooter')[0].clientHeight
-				let height = parentH - parentPadT - parentPadB
-				console.log(parent.clientHeight, parentPadT, parentPadB, height)
-				this.mainBodyStyle.height = height + 'px'
+				//				console.log(parent.style.paddingTop)
+				//				let getComputedStyles = (document.defaultView.getComputedStyle || window.getComputedStyle || function(el) {
+				//					return el.currentStyle
+				//				})
+				//
+				//				let parentH = parent.clientHeight //parseFloat(getComputedStyles(parent).height)
+				//				let parentPadT = parseFloat(getComputedStyles(parent).paddingTop) ||
+				//					document.getElementsByClassName('indexHeader')[0].clientHeight
+				//				let parentPadB = parseFloat(getComputedStyles(parent).paddingBottom) ||
+				//					document.getElementsByClassName('indexFooter')[0].clientHeight
+				//				let height = parentH - parentPadT - parentPadB
+				//				console.log(parent.clientHeight, parentPadT, parentPadB, height)
+				this.mainBodyStyle.height = main_tab_height - el_tabs_height + 'px'
 			},
 			selectTab: function(tab) {
 				let tbI = tab.index
 				let tbN = tab.name
 				let tabPN = tab.paneName
 				let tabTitle = tab.label
-				console.log('selectTab:', tbI, ':-----', tbN, '----', tabPN, '----', tabTitle)
+
+				//console.log('selectTab:', tbI, ':-----', tbN, '----', tabPN, '----', tabTitle)
+				this.$store.commit({
+					type: 'setActive',
+					active: tbN,
+					router: this.$router
+				})
 			},
 			removeTab: function(name) {
-				console.log('remove:', name)
+				//console.log('remove:', name)
 
+				let tabs = this.mainView;
+				let activeName = this.active;
+				if(activeName === name) {
+					tabs.forEach((tab, index) => {
+						if(tab.index === name) {
+							let nextTab = tabs[index + 1] || tabs[index - 1];
+							if(nextTab) {
+								activeName = nextTab.index;
+							}
+						}
+					});
+				}
+				this.$store.commit({
+					type: 'setActive',
+					active: activeName,
+					router: this.$router
+				})
+				this.$store.commit({
+					type: 'setMainView',
+					mainView: tabs.filter(tab => tab.index !== name)
+				})
 			}
 		}
 	}

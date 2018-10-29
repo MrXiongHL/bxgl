@@ -1,7 +1,7 @@
 <template>
-	<!--<div>
+	<div style="height: 100px;text-align: center;line-height: 100px;">
 		footer
-	</div>-->
+	</div>
 </template>
 
 <style>

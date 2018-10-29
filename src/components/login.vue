@@ -30,8 +30,8 @@
 			return {
 				title: '登陆',
 				labelPosition: 'right',
-				loginNamePhoder:'请输入用户名',
-				loginPwdPhoder:'请输入密码名',
+				loginNamePhoder: '请输入用户名',
+				loginPwdPhoder: '请输入密码名',
 				loginForm: {
 					loginName: '',
 					loginPwd: '',
@@ -45,11 +45,11 @@
 			})
 		},
 		methods: {
-			login:function(){
+			login: function() {
 				this.$router.replace({
-					path:'/main_index',
-					params:{
-						dt:'sdfd'
+					path: '/main_index',
+					params: {
+						dt: 'sdfd'
 					}
 				})
 			}
@@ -78,20 +78,20 @@
 		width: 100%;
 	}
 	
-	.el-input-group__prepend {
+	#appIndex .el-input-group__prepend {
 		padding: 0px;
 		background-color: #409EFF;
 		border: none !important;
 	}
 	
-	.icons {
+	#appIndex .icons {
 		font-size: 22px;
 		padding: 0 5px;
 		color: white;
 		background-color: transparent;
 	}
 	
-	.el-input input {
+	#appIndex .el-input input {
 		outline: none !important;
 		border: none !important;
 	}

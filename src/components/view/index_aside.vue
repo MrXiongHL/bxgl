@@ -115,21 +115,35 @@
 				icon: 'el-icon-loading',
 				component: elItem,
 			}, {
-				path: '/item',
+				path: '/',
 				name: '菜单',
 				component: elGroup,
 				children: [{
 					path: '/main_index2',
 					name: 'main_index2',
+					icon:'el-icon-loading',
 					component: elItem
 				}, {
 					path: '/main_helloworld',
 					name: 'main_helloworld3',
+					icon:'el-icon-setting',
 					component: elItem
 				}]
 
 			}]
-			console.log(this.$router.options.routes)
+			//console.log(this.$router.options.routes)
+			this.$store.commit({
+				type: 'openRoute',
+				router: this.$router,
+				dt: {
+					index: '/main_index',
+					title: '首页',
+					content: '',
+					icon: 'el-icon-loading',
+					closable: false
+				}
+			})
+
 		},
 		methods: {
 			closeElMenu() {
@@ -145,27 +159,19 @@
 				//console.log(key, keyPath);
 			},
 			selectItem(index, indexPath, vm) {
-				console.log("选中", index, indexPath, vm.$el.getElementsByTagName('i')[0].getAttribute('class'))
+				//console.log("选中", index, indexPath, vm.$el.getElementsByTagName('i')[0].getAttribute('class'))
 				let icons = vm.$el.getElementsByTagName('i')[0].getAttribute('class')
-				this.$router.push({
-					path: index,
-					query: {
-						dt: 'dd'
+				this.$store.commit({
+					type: 'openRoute',
+					router: this.$router,
+					dt: {
+						title: vm.$el.innerText,
+						index: index,
+						content: '',
+						icon: icons,
+						closable: true
 					}
 				})
-				//				this.$store.commit({
-				//					type: 'setRouterArr',
-				//					mainUrl: '',
-				//					router: this.$router,
-				//					urlLocatoin: urlLocatoin,
-				//					dt: {
-				//						title: vm.$el.innerText,
-				//						index: index,
-				//						content: '',
-				//						icon: icons,
-				//						closable: true
-				//					}
-				//				})
 			}
 		}
 	}
