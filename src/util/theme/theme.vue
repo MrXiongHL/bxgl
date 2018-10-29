@@ -1,23 +1,27 @@
 <template>
 	<div>
-		更改主题
 		<el-color-picker class="theme-picker" popper-class="theme-picker-dropdown" v-model="theme"></el-color-picker>
 	</div>
 </template>
 
 <script>
-	//const version = require('element-ui/package.json').version // element-ui version from node_modules
 	//theme
 	const ORIGINAL_THEME = '#409EFF' // default color
 	import { themes } from './themeStyle'
 
 	import { getData } from '../axios'
+	import { mapState } from 'vuex'
 	export default {
 		data() {
 			return {
 				chalk: '', // content of theme-chalk css
 				theme: ORIGINAL_THEME
 			}
+		},
+		computed: {
+			...mapState({
+				themeColor: state => state.themeColor
+			})
 		},
 		watch: {
 			'theme': function(val, oldVal) {
@@ -27,16 +31,12 @@
 				//console.log(themeCluster, originalCluster)
 				//存储
 				localStorage.setItem('ORIGINAL_THEME', this.theme)
-
-				//				const styles = [].slice.call(document.querySelectorAll('style'))
-				//					.filter(style => {
-				//						const text = style.innerText || style.innerHTML
 				//
-				//						let elementStyle = new RegExp(oldVal, 'i').test(text) && !/Chalk Variables/.test(text)
-				//						//console.log(text)
-				//						return elementStyle
-				//					})
-				//		
+				this.$store.commit({
+					type:'setThemeColor',
+					themeColor:this.theme
+				})
+				
 				let styles = [themes]
 				let myTheme = document.getElementById('my-theme')
 				if(!myTheme) {
@@ -47,9 +47,6 @@
 					styles = [myTheme.innerText]
 				}
 				styles.forEach(styles => {
-					//					const {
-					//						innerText
-					//					} = style
 					const innerText = styles;
 					//console.log(innerText)
 					if(typeof innerText !== 'string') return
@@ -69,9 +66,6 @@
 			updateStyle(style, oldCluster, newCluster) {
 				let newStyle = style
 				oldCluster.forEach((color, index) => {
-					//if(index==0)
-					//console.log(color,newCluster[index],newStyle)
-
 					newStyle = newStyle.replace(new RegExp(color, 'ig'), newCluster[index])
 				})
 				return newStyle

@@ -55,6 +55,7 @@
 		},
 		created: function() {
 			//console.log(this.routerIndex)
+			console.log("params:",this.$route.query)
 		},
 		computed: {
 			...mapState({

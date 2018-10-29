@@ -1,11 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// import HelloWorld from '@/components/HelloWorld'
 
-//const HelloWorld = resolve => require(['@/components/HelloWorld'], resolve)
 const Login = resolve => require(['@/components/login'], resolve)
-//const Index = resolve => require(['@/components/index'], resolve)
-const Index = resolve => require(['@/components/index-two'], resolve)
+const Index = resolve => require(['@/components/index'], resolve)
 const Index_main = resolve => require(['@/components/view/index_main'], resolve)
 const NoFile404 = resolve => require(['@/components/404'], resolve)
 
@@ -23,20 +20,16 @@ export default new Router({
 		component: Index,
 		children: [{
 			path: 'main_index',
-			name: 'main_index1',
+			name: 'main_index',
 			component: MainIndex
 		}, {
-			path: 'main_index',
+			path: 'main_index2',
 			name: 'main_index2',
 			component: MainIndex
 		}, {
 			path: 'main_helloworld',
 			name: 'main_helloworld',
 			component: MainHelloWorld
-		}, {
-			path: '*',
-			name: 'nofile404c',
-			component: NoFile404
 		}]
 
 	}, {

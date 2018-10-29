@@ -1,5 +1,5 @@
 <template>
-	<div id="appIndex" ref="appIndex" v-title :data-title="title">
+	<div id="appIndex" ref="appIndex" v-title="title">
 		<el-form id="loginFrom" label-width="" size="medium" :model="loginForm" :label-position="labelPosition">
 			<el-form-item label="">
 				<el-input v-model="loginForm.loginName" :placeholder="loginNamePhoder">
@@ -16,7 +16,7 @@
 				</el-input>
 			</el-form-item>
 			<el-form-item>
-				<el-button id="loginBtn" type="primary">登陆</el-button>
+				<el-button id="loginBtn" @click="login" type="primary">登陆</el-button>
 			</el-form-item>
 		</el-form>
 	</div>
@@ -45,7 +45,14 @@
 			})
 		},
 		methods: {
-
+			login:function(){
+				this.$router.replace({
+					path:'/main_index',
+					params:{
+						dt:'sdfd'
+					}
+				})
+			}
 		}
 	}
 </script>

@@ -1,7 +1,6 @@
 <template>
 	<div>
 		没有找到页面{{url}}
-		<input type="text" name="" id="" value="" />
 	</div>
 </template>
 
@@ -15,6 +14,7 @@
 		},
 		watch: {
 			$route: function(to, from) {
+				return
 				this.url = window.location.href
 			}
 		},

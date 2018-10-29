@@ -18,6 +18,7 @@ axios.interceptors.request.use(function(config) {
 
 //添加一个响应拦截器
 axios.interceptors.response.use(function(res) {
+	
 	//在这里对返回的数据进行处理
 	return res
 }, function(error) {

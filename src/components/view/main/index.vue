@@ -1,17 +1,26 @@
 <template>
-	<div id="sy-rooter">
-		这是首页
-		<el-input v-model='text' />
-		<el-input v-model="text" />
-			<div v-for= "x in item" :key="x">
+	<el-scrollbar ref="elScrollbar" :vertical="vertical" :noresize="false" :viewStyle="{padding:'10px 10px'}">
+
+		<div id="sy-rooter">
+			这是首页
+			<el-input v-model='text' />
+			<el-input v-model="text" />
+			<div v-for="x in item" :key="x">
 				{{x}}-div
 			</div>
-		<div>{{text}}</div>
-	</div>
+			<div>{{text}}</div>
+		</div>
+	</el-scrollbar>
 </template>
 
 <style>
-
+	.el-scrollbar {
+		height: 100%;
+	}
+	
+	.el-scrollbar__wrap {
+		overflow-x: hidden !important;
+	}
 </style>
 
 <script>
@@ -22,32 +31,33 @@
 				length: 100
 			}, (v, k) => k)
 			return {
+				vertical: true,
+				scrolly: 0,
 				text: '',
 				item: arr
 			}
 		},
-		watch: {
-			text: function(to, from) {
+		watch: {},
+		beforeRouteEnter(to, from, next) {
+			// 在渲染该组件的对应路由被 confirm 前调用
+			// 不！能！获取组件实例 `this`
+			// 因为当守卫执行前，组件实例还没被创建
+			console.log('to,', to)
+			next(vm => {
+				vm.conso('xxxx')
+				vm.text = 'dt'
+			})
+		},
+		created: function() {
+			console.log("params:", this.$route.query.dt)
 
-				let syRooter = document.getElementById('sy-rooter')
-
-				//				let divs = {
-				//					render: function(r) {
-				//						return r('div', {
-				//							domProps: {
-				//								innerText: from
-				//							}
-				//						})
-				//					}
-				//				}
-				let divs = document.createElement('div')
-				divs.innerText = from
-				syRooter.appendChild(divs)
-				//console.log(divs)
-			}
+		},
+		mounted: function() {
 		},
 		methods: {
-
+			conso: function(d) {
+				console.log(d)
+			}
 		}
 	}
 </script>
