@@ -1,5 +1,5 @@
 <template>
-	<div style="height: 100px;text-align: center;line-height: 100px;">
+	<div style="height: 40px;text-align: center;line-height: 40px;">
 		footer
 	</div>
 </template>

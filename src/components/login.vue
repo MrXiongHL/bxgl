@@ -47,7 +47,7 @@
 		methods: {
 			login: function() {
 				this.$router.replace({
-					path: '/main_index',
+					path: '/',
 					params: {
 						dt: 'sdfd'
 					}

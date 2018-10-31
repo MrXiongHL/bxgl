@@ -1,7 +1,7 @@
 <template>
 	<div id="asideDiv">
 		<el-button @click="closeElMenu" class="el-button--primary">close</el-button>
-		<el-menu class="el-menu-vertical-demo" @open="handleOpen" :default-active="activeItem" @select="selectItem" @close="handleClose" :collapse="asideClose">
+		<el-menu class="el-menu-vertical-demo" @open="handleOpen" :default-active="active" @select="selectItem" @close="handleClose" :collapse="asideClose">
 			<compnent :is="item.component" :dt="item" :children="item.children" :key="item.path" v-for="item in view"></compnent>
 		</el-menu>
 	</div>
@@ -94,7 +94,8 @@
 
 	import { mapState } from 'vuex'
 
-	const urlLocatoin = '#/'
+	import { mainView } from '@/router/mainView'
+
 	export default {
 		name: 'index-aside',
 		data() {
@@ -105,7 +106,7 @@
 		computed: {
 			...mapState({
 				asideClose: state => state.asideClose,
-				activeItem: state => state.active
+				active: state => state.active
 			}),
 		},
 		created: function() {
@@ -121,12 +122,12 @@
 				children: [{
 					path: '/main_index2',
 					name: 'main_index2',
-					icon:'el-icon-loading',
+					icon: 'el-icon-loading',
 					component: elItem
 				}, {
 					path: '/main_helloworld',
-					name: 'main_helloworld3',
-					icon:'el-icon-setting',
+					name: 'main_helloworld',
+					icon: 'el-icon-setting',
 					component: elItem
 				}]
 
@@ -134,11 +135,11 @@
 			//console.log(this.$router.options.routes)
 			this.$store.commit({
 				type: 'openRoute',
-				router: this.$router,
+//				router: this.$router,
 				dt: {
 					index: '/main_index',
 					title: '首页',
-					content: '',
+					content: mainView['/main_index'],
 					icon: 'el-icon-loading',
 					closable: false
 				}
@@ -163,11 +164,11 @@
 				let icons = vm.$el.getElementsByTagName('i')[0].getAttribute('class')
 				this.$store.commit({
 					type: 'openRoute',
-					router: this.$router,
+					//router: this.$router,
 					dt: {
 						title: vm.$el.innerText,
 						index: index,
-						content: '',
+						content: mainView[index],
 						icon: icons,
 						closable: true
 					}

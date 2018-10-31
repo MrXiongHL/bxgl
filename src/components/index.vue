@@ -26,10 +26,10 @@
 </template>
 
 <script>
-	import IndexMain from './view/index_main'
-	import IndexAside from './view/index_aside'
-	import IndexHeader from './view/index_header'
-	import IndexFooter from './view/index_footer'
+	import IndexMain from '@/components/view/index_main'
+	import IndexAside from '@/components/view/index_aside'
+	import IndexHeader from '@/components/view/index_header'
+	import IndexFooter from '@/components/view/index_footer'
 
 	import { mapState } from 'vuex'
 	export default {
