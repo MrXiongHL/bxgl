@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+Vue.use(ElementUI);
 
 //自定义指令
 import './util/vue_directive'
@@ -17,7 +18,6 @@ import router from './router'
 import './util/config'
 
 
-Vue.use(ElementUI);
 
 Vue.config.productionTip = false
 Vue.config.debug = true;

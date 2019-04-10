@@ -8,15 +8,19 @@
 <script>
 	//theme
 	const ORIGINAL_THEME = '#409EFF' // default color
-	import { themes } from './themeStyle'
+	//	import { themes } from './themeStyle'
+	const themes = () =>
+		import( /* webpackChunkName: "group-theme" */ '@/util/theme/themeStyle')
 
 	import { getData } from '../axios'
 	import { mapState } from 'vuex'
+	let styles = [];
 	export default {
 		data() {
 			return {
 				chalk: '', // content of theme-chalk css
-				theme: ORIGINAL_THEME
+				theme: ORIGINAL_THEME,
+				themeStr: ''
 			}
 		},
 		computed: {
@@ -34,22 +38,23 @@
 				localStorage.setItem('ORIGINAL_THEME', this.theme)
 				//
 				this.$store.commit({
-					type:'setThemeColor',
-					themeColor:this.theme
+					type: 'setThemeColor',
+					themeColor: this.theme
 				})
-				
-				let styles = [themes]
+				styles = [this.themeStr];
+					console.log(this.themeStr.length);
 				let myTheme = document.getElementById('my-theme')
 				if(!myTheme) {
 					myTheme = document.createElement('style')
 					myTheme.setAttribute('id', 'my-theme')
 					document.head.appendChild(myTheme)
 				} else {
-					styles = [myTheme.innerText]
+					styles = [myTheme.innerText||this.themeStr];
+					console.log('fg',styles[0].length);
 				}
-				styles.forEach(styles => {
-					const innerText = styles;
-					//console.log(innerText)
+				styles.forEach(styleDom => {
+					const innerText = styleDom;
+					console.log('set',innerText.length)
 					if(typeof innerText !== 'string') return
 					myTheme.innerText = this.updateStyle(innerText, originalCluster, themeCluster)
 				})
@@ -59,15 +64,20 @@
 		mounted: function() {
 			// DOM 现在更新了
 			// `this` 绑定到当前实例
-			this.theme = localStorage.getItem('ORIGINAL_THEME') || ORIGINAL_THEME
-			//console.log(themes)
-		},
+			
 
-		methods: {
-			updateStyle(style, oldCluster, newCluster) {
-				let newStyle = style
-				oldCluster.forEach((color, index) => {
-					newStyle = newStyle.replace(new RegExp(color, 'ig'), newCluster[index])
+			themes().then((dt) => {
+				this.themeStr = dt.themes;
+				this.theme = localStorage.getItem('ORIGINAL_THEME') || ORIGINAL_THEME;
+})
+},
+
+methods: {
+		updateStyle(style, oldCluster, newCluster) {
+			let newStyle = style;
+			console.log('change', style.length)
+			oldCluster.forEach((color, index) => {
+						newStyle = newStyle.replace(new RegExp(color,'ig'), newCluster[index])
 				})
 				return newStyle
 			},

@@ -5,7 +5,7 @@
 const path = require('path')
 
 //配置打包路径
-var buidPath = 'baby365server'; // baby365server || ./
+var buidPath = './'; // babymanagement || ./
 var index = buidPath == './' ? '../dist/index.html' : '../dist/' + buidPath + '/index.html';
 var assetsRoot = buidPath == './' ? '../dist' : '../dist/' + buidPath;
 var assetsPublicPath = buidPath == './' ? './' : '/' + buidPath + '/';

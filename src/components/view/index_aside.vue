@@ -94,7 +94,7 @@
 
 	import { mapState } from 'vuex'
 
-//	import { mainView } from '@/router/mainView'
+	//	import { mainView } from '@/router/mainView'
 
 	export default {
 		name: 'index-aside',
