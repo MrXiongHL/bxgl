@@ -3,8 +3,14 @@
 		<el-scrollbar ref="elScrollbar" :vertical="false" :noresize="false" :viewStyle="{padding:'10px 10px'}">
 			<el-tabs ref="tabs" v-model="active" type="border-card" @tab-remove="removeTab" @tab-click="selectTab">
 				<el-tab-pane :key="item.index" v-if="item.index" v-for="(item, index) in mainView" :closable="item.closable" :name="item.index">
-					<component :is="item.content"></component>
+					<!--<component :is="item.content"></component>-->
 					<span slot="label"><i :class="item.icon"></i> {{item.title}}</span>
+					<!----+---->
+					<!--<el-scrollbar ref="elScrollbar" :vertical="false" :noresize="false" :viewStyle="{padding:'10px 10px'}">-->
+						<keep-alive :include="cache">
+							<router-view></router-view>
+						</keep-alive>
+					<!--</el-scrollbar>-->
 				</el-tab-pane>
 			</el-tabs>
 		</el-scrollbar>
@@ -146,42 +152,42 @@
 			}
 		},
 		watch: {
-			//			$route: function(to, from) {
-			//				//console.log("$route：", to)
-			//				let open_item = null //取出mainView 与to.path相等的
-			//				//设置keep-alive,页面缓存
-			//				this.cache = this.mainView.map(function(item) {
-			//					if(item.index == to.path) {
-			//						open_item = item
-			//					}
-			//					return item.index.substring(1)
-			//				})
-			//				//从历史路由内取出单个路由记录
-			//				if(!open_item) {
-			//					let dt = null;
-			//					this.historyMainView.forEach(function(item) {
-			//						if(item.index == to.path) {
-			//							dt = item
-			//						}
-			//					})
-			//					if(dt) {
-			//						this.$store.commit({
-			//							type: 'openRoute',
-			//							//router: this.$router,
-			//							dt: dt
-			//						})
-			//					}
-			//
-			//				} else { //已经打开了就切换
-			//					this.$store.commit({
-			//						type: 'setActive',
-			//						active: to.path,
-			//						//router: this.$router
-			//					})
-			//
-			//				}
-			//				//console.log(this.cache)
-			//			}
+			$route: function(to, from) {
+				//console.log("$route：", to)
+				let open_item = null //取出mainView 与to.path相等的
+				//设置keep-alive,页面缓存
+				this.cache = this.mainView.map(function(item) {
+					if(item.index == to.path) {
+						open_item = item
+					}
+					return item.index.substring(1)
+				})
+				//从历史路由内取出单个路由记录
+				if(!open_item) {
+					let dt = null;
+					this.historyMainView.forEach(function(item) {
+						if(item.index == to.path) {
+							dt = item
+						}
+					})
+					if(dt) {
+						this.$store.commit({
+							type: 'openRoute',
+							router: this.$router,
+							dt: dt
+						})
+					}
+
+				} else { //已经打开了就切换
+					this.$store.commit({
+						type: 'setActive',
+						active: to.path,
+						router: this,
+					})
+					console.log(this.$route.query)
+				}
+				//console.log(this.cache)
+			}
 		},
 		methods: {
 			resizeMain: function() {
@@ -204,7 +210,7 @@
 				this.$store.commit({
 					type: 'setActive',
 					active: tbN,
-					//router: this.$router
+					router: this
 				})
 			},
 			removeTab: function(name) {
@@ -225,7 +231,7 @@
 				this.$store.commit({
 					type: 'setActive',
 					active: activeName,
-					//router: this.$router
+					router: this
 				})
 
 				//router.push

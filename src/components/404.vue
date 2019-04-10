@@ -14,7 +14,6 @@
 		},
 		watch: {
 			$route: function(to, from) {
-				return
 				this.url = window.location.href
 			}
 		},

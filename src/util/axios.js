@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import Url from '../config/urlConfig.js'
+//import Url from '../config/urlConfig.js'
 import querystring from 'querystring'
 
 //添加一个请求拦截器
@@ -29,7 +29,7 @@ axios.interceptors.response.use(function(res) {
 const getData = (data) => {
 	axios({
 		method: data.methodType,
-		url: Url.httpUrl + data.url,
+		url: 'Url.httpUrl' + data.url,
 		data: data.data,
 		responseType: data.dataType || 'json',
 	}).then(function(res) {

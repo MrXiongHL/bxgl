@@ -94,7 +94,7 @@
 
 	import { mapState } from 'vuex'
 
-	import { mainView } from '@/router/mainView'
+//	import { mainView } from '@/router/mainView'
 
 	export default {
 		name: 'index-aside',
@@ -135,11 +135,11 @@
 			//console.log(this.$router.options.routes)
 			this.$store.commit({
 				type: 'openRoute',
-//				router: this.$router,
+				router: this.$router,
 				dt: {
 					index: '/main_index',
 					title: '首页',
-					content: mainView['/main_index'],
+					//content: mainView['/main_index'],
 					icon: 'el-icon-loading',
 					closable: false
 				}
@@ -160,15 +160,15 @@
 				//console.log(key, keyPath);
 			},
 			selectItem(index, indexPath, vm) {
-				//console.log("选中", index, indexPath, vm.$el.getElementsByTagName('i')[0].getAttribute('class'))
+				console.log("选中", index, indexPath, vm.$el.getElementsByTagName('i')[0].getAttribute('class'))
 				let icons = vm.$el.getElementsByTagName('i')[0].getAttribute('class')
 				this.$store.commit({
 					type: 'openRoute',
-					//router: this.$router,
+					router: this.$router,
 					dt: {
 						title: vm.$el.innerText,
 						index: index,
-						content: mainView[index],
+						//content: mainView[index],
 						icon: icons,
 						closable: true
 					}

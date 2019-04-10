@@ -39,7 +39,7 @@
 			<el-button type="success" icon="el-icon-check" circle></el-button>
 			<el-button type="info" icon="el-icon-message" circle></el-button>
 			<el-button type="warning" icon="el-icon-star-off" circle></el-button>
-			<el-button type="danger" v-for="x in 10" :key="x" icon="el-icon-delete" circle></el-button>
+			<el-button type="danger" v-for="x in 1000" :key="x" icon="el-icon-delete" circle></el-button>
 		</el-row>
 	</div>
 </template>

@@ -8,16 +8,19 @@ export default new Vuex.Store({
 		themeColor: '', //主题背景
 		active: '', //当前路由
 		mainView: [], //存储路由视图,
-		//historyMainView: [] //历史路由
+		historyMainView: [] //历史路由
 	},
 	mutations: {
 		setActive: function(state, data) {
 			state.active = data.active
 			//router.push
 			//设置路由并跳转
-			//			data.router.push({
-			//				path: data.active,
-			//			})
+			data.router.$router.push({
+				path: data.active,
+				query: {
+					...data.router.$route.query
+				}
+			})
 		},
 		setAsideClose: function(state, data) {
 			state.asideClose = data.asideClose
@@ -33,16 +36,19 @@ export default new Vuex.Store({
 			state.active = data.dt.index
 			//router.push
 			//设置路由并跳转
-			//			data.router.push({
-			//				path: data.dt.index,
-			//			})
+			data.router.push({
+				path: data.dt.index,
+				query: {
+					...data.dt
+				}
+			})
 
 			//清除历史记录内item.index == data.dt.index的旧路由
-//			state.historyMainView = state.historyMainView.filter(function(item) {
-//				return item.index != data.dt.index
-//			})
+			state.historyMainView = state.historyMainView.filter(function(item) {
+				return item.index != data.dt.index
+			})
 			//更新
-			//state.historyMainView.push(data.dt)
+			state.historyMainView.push(data.dt);
 
 			//当前打开的所有路由
 			let isOpen = (state.mainView || []).filter(function(item) {
@@ -51,9 +57,9 @@ export default new Vuex.Store({
 			if(isOpen.length > 0) {
 				return
 			}
-
+			//
 			state.mainView.push(data.dt)
-			console.log("mainView"+state.mainView.length)
+			//			console.log("mainView"+state.mainView.length);
 		}
 	}
 })
